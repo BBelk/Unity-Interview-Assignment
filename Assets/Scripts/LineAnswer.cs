@@ -24,7 +24,7 @@ public class LineAnswer : MonoBehaviour
     public void SetLineRendererStart(){
         var linePos = Camera.main.ScreenToWorldPoint(lineAnchorObject.transform.localPosition);
         myLineRenderer.SetPosition(0, Camera.main.ScreenToWorldPoint(new Vector3(linePos.x, linePos.y, 0f)));
-        linePos = new Vector3(linePos.x + 500, linePos.y, linePos.z);
+        linePos = new Vector3(linePos.x + 200, linePos.y, linePos.z);
         myLineRenderer.SetPosition(1, (new Vector3(linePos.x, linePos.y, 0f)));
         myLineHandler.SetControlObjectPosition(linePos);
 
