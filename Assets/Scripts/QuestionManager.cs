@@ -8,7 +8,6 @@ public class QuestionManager : MonoBehaviour
     public Transform leftSideTransform;
     public Transform rightSideTransform;
     public QuestionWrapper questionWrapper;
-    public Question[] questions;
 
     private const string jsonFilePath = "Assets/Included/questions.json";
 
@@ -22,20 +21,15 @@ public class QuestionManager : MonoBehaviour
         questionWrapper = JsonUtility.FromJson<QuestionWrapper>(jsonText);
 
         // Access and display the parsed data
-        questions = questionWrapper.questions;
+        var questions = questionWrapper.questions;
         Debug.Log("ALL QUESTIONS" + questions.Length);
     }
-
-    // Rest of your code...
 }
 
-[System.Serializable]
 public class QuestionWrapper
 {
     public Question[] questions;
 }
-
-[System.Serializable]
 public class Question
 {
     public int questionNumber;
