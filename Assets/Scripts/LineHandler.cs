@@ -11,11 +11,11 @@ public class LineHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public GameObject controlObject;
     public Vector3 startPosition;
     void Update(){
-        myLineRenderer.SetPosition(2, Camera.main.ScreenToWorldPoint(controlObject.transform.position));
+        myLineRenderer.SetPosition(2, (controlObject.transform.localPosition));
     }
 
     public void SetControlObjectPosition(Vector3 newPosWorldSpace){
-        controlObject.transform.position = newPosWorldSpace;
+        controlObject.transform.localPosition = (newPosWorldSpace);
         startPosition = newPosWorldSpace;
     }
 

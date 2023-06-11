@@ -5,10 +5,11 @@ using UnityEngine;
 public class LineAnswer : MonoBehaviour
 {
     
-    public GameObject lineAnchorObject;
+    public RectTransform lineAnchorObject;
     public GameObject answerObject;
     public LineRenderer myLineRenderer;
     public LineHandler myLineHandler;
+    public RectTransform canvasRectTransform;
     // Start is called before the first frame update
 
     public Canvas canvas;
@@ -16,25 +17,18 @@ public class LineAnswer : MonoBehaviour
     void Start(){
         SetLineRendererStart();
     }
+
+    void Update(){
+        // SetLineRendererStart();
+    }
     public void SetLineRendererStart(){
-        Vector2 movePos;
-         RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                     canvas.transform as RectTransform,
-                    //  Input.mousePosition, 
-                    Camera.main.WorldToScreenPoint(lineAnchorObject.transform.position),
-                     canvas.worldCamera,
-                     out movePos);
-        //  _lineRenderer.SetPosition(0, transform.position);
-         myLineRenderer.SetPosition(0,
-              canvas.transform.TransformPoint(movePos));
-
-
-        // var linePos = Camera.main.ScreenToWorldPoint(lineAnchorObject.transform.position);
-        var linePos = Camera.main.ScreenToWorldPoint(lineAnchorObject.transform.position);
-        // myLineRenderer.SetPosition(0, linePos);?
-        linePos = new Vector3(linePos.x + 5, linePos.y, linePos.z);
-        myLineRenderer.SetPosition(1, linePos);
+        var linePos = Camera.main.ScreenToWorldPoint(lineAnchorObject.transform.localPosition);
+        myLineRenderer.SetPosition(0, Camera.main.ScreenToWorldPoint(new Vector3(linePos.x, linePos.y, 0f)));
+        linePos = new Vector3(linePos.x + 500, linePos.y, linePos.z);
+        myLineRenderer.SetPosition(1, (new Vector3(linePos.x, linePos.y, 0f)));
         myLineHandler.SetControlObjectPosition(linePos);
+
+        
     }
 
     public void SetColor(Color newColor){
