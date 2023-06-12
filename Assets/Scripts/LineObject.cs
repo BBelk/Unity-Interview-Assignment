@@ -4,17 +4,8 @@ using UnityEngine;
 
 public class LineObject : MonoBehaviour
 {
-
     public LineAnswer LineAnswer;
     public LineQuestion LineQuestion;
     public int weight;
     public bool correct;
-    void Start(){
-        
-    }
-
-    // Update is called once per frame
-    void Update(){
-        
-    }
 }

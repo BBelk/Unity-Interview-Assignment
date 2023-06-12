@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System.IO;
+using UnityEngine.Networking;
 
 public class QuestionManager : MonoBehaviour
 {
@@ -34,14 +36,42 @@ public class QuestionManager : MonoBehaviour
     }
 
     void Start(){
-        string jsonText = System.IO.File.ReadAllText(jsonFilePath);
-        questionWrapper = JsonUtility.FromJson<QuestionWrapper>(jsonText);
-        var questions = questionWrapper.questions;
-        Debug.Log("Questions: " + questionWrapper);
-        GenerateLineObjects(questionWrapper.questions);
+        string filePath = Application.streamingAssetsPath + "/questions.json";
+    #if UNITY_WEBGL && !UNITY_EDITOR
+        StartCoroutine(LoadJSONFileWebGL(filePath));
+    #else
+        LoadJSONFile(filePath);
+    #endif
     }
 
-    
+    void LoadJSONFile(string filePath)
+    {
+        if (File.Exists(filePath)){
+            string dataAsJson = File.ReadAllText(filePath);
+            QuestionWrapper questionWrapper = JsonUtility.FromJson<QuestionWrapper>(dataAsJson);
+            GenerateLineObjects(questionWrapper.questions);
+        }
+        else{
+            Debug.LogError("Failed to load JSON file: " + filePath);
+        }
+    }
+
+    IEnumerator LoadJSONFileWebGL(string filePath)
+    {
+        UnityWebRequest www = UnityWebRequest.Get(filePath);
+        yield return www.SendWebRequest();
+
+        if (www.result == UnityWebRequest.Result.Success)
+        {
+            string dataAsJson = www.downloadHandler.text;
+            QuestionWrapper questionWrapper = JsonUtility.FromJson<QuestionWrapper>(dataAsJson);
+            GenerateLineObjects(questionWrapper.questions);
+        }
+        else
+        {
+            Debug.LogError("Failed to load JSON file: " + www.error);
+        }
+    }
     public void GenerateLineObjects(Question[] questions){
         for(int x = 0; x< questions.Length - 1; x++ ){
             var newLO = Instantiate(allLineObjects[0], this.transform);
