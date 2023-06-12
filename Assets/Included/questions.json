@@ -23,6 +23,12 @@
          "text": "Starts with the letter D",
          "expectedAnswer": "Defense",
          "weight": 1
+      },
+      {
+         "questionNumber": 3,
+         "text": "Water bears?",
+         "expectedAnswer": "Moss piglet",
+         "weight": 1
       }
    ]
 }

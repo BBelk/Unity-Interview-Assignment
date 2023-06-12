@@ -13,6 +13,7 @@ public class QuestionManager : MonoBehaviour
     public GameObject errorTextObject;
     public GameObject scoreDisplayObject;
     public GameObject scoreTextObject;
+    public GameObject scoreSuperlativeObject;
     public Animation scoreDisplayAnimation;
     private const string jsonFilePath = "Assets/Included/questions.json";
 
@@ -74,13 +75,22 @@ public class QuestionManager : MonoBehaviour
     }
 
     public void CheckAnswersButton(){
+        var totalPossible = 0;
+        var totalDone = 0;
         foreach(LineObject newLO in allLineObjects){
             if(newLO.LineAnswer.selectedQuestion == null){
                 StartCoroutine(ActivateErrorTextObject());
                 return;
             }
+            totalPossible += newLO.weight;
+            if(newLO.LineAnswer.selectedQuestion == newLO.LineQuestion){
+                totalDone += newLO.weight;
+                newLO.correct = true;
+            }
         }
-        // Debug.Log("ALL DONE");
+        
+        scoreTextObject.GetComponent<TMP_Text>().text = totalDone + "/" + totalPossible;
+        if(totalDone == totalPossible){scoreSuperlativeObject.SetActive(false);}
         scoreDisplayObject.SetActive(true);
         scoreDisplayAnimation.Play("displayScoreAnim");
     }
