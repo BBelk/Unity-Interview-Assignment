@@ -9,10 +9,7 @@ public class LineAnswer : MonoBehaviour
     public GameObject answerObject;
     public LineRenderer myLineRenderer;
     public LineHandler myLineHandler;
-    public RectTransform canvasRectTransform;
     public LineQuestion selectedQuestion;
-
-    public Canvas canvas;
 
     void Start(){
         SetLineRendererStart();
