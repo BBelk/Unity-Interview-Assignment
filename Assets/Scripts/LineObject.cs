@@ -7,6 +7,7 @@ public class LineObject : MonoBehaviour
 
     public LineAnswer LineAnswer;
     public LineQuestion LineQuestion;
+    public int weight;
     void Start(){
         
     }
