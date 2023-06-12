@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class QuestionManager : MonoBehaviour
 {
@@ -9,7 +10,10 @@ public class QuestionManager : MonoBehaviour
     public Transform rightSideTransform;
     public QuestionWrapper questionWrapper;
     public List<Color> allPossibleColors;
-
+    public GameObject errorTextObject;
+    public GameObject scoreDisplayObject;
+    public GameObject scoreTextObject;
+    public Animation scoreDisplayAnimation;
     private const string jsonFilePath = "Assets/Included/questions.json";
 
     public void SetLineQuestionsToStart(){
@@ -46,10 +50,12 @@ public class QuestionManager : MonoBehaviour
             newLO.LineAnswer = newLA;
             newLO.LineQuestion = newLQ;
         }
+        var orderInLayer = -999;
         for(int y = 0; y < questions.Length; y++){
             var getLO = allLineObjects[y];
             getLO.weight = questions[y].weight;
             getLO.LineAnswer.SetText(questions[y].expectedAnswer);
+            getLO.LineAnswer.myLineRenderer.sortingOrder = orderInLayer += 1;
             getLO.LineQuestion.SetText(questions[y].text);
             getLO.LineAnswer.SetColor(allPossibleColors[y]);
         }
@@ -66,6 +72,24 @@ public class QuestionManager : MonoBehaviour
             parentTransform.GetChild(i).SetSiblingIndex(randomIndex);
         }
     }
+
+    public void CheckAnswersButton(){
+        foreach(LineObject newLO in allLineObjects){
+            if(newLO.LineAnswer.selectedQuestion == null){
+                StartCoroutine(ActivateErrorTextObject());
+                return;
+            }
+        }
+        // Debug.Log("ALL DONE");
+        scoreDisplayObject.SetActive(true);
+        scoreDisplayAnimation.Play("displayScoreAnim");
+    }
+    public IEnumerator ActivateErrorTextObject(){
+        errorTextObject.SetActive(true);
+        yield return new WaitForSeconds(2f);
+        errorTextObject.SetActive(false);
+    }
+
 }
 
 
